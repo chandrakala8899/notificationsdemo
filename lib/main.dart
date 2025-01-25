@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:pushnotifications/api/firebase_api.dart';
+import 'package:pushnotifications/api/firebase_utils.dart';
 import 'package:pushnotifications/firebase_options.dart';
 import 'package:pushnotifications/pages/home_page.dart';
 
@@ -8,13 +9,23 @@ void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await FirebaseApi().initNotifications();
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  String accessToken=await FirebaseUtils.getAccessToken();
+  print('Access Token : $accessToken');
+  
+  runApp(MyApp());
+  
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyApp extends StatefulWidget {
+   MyApp({super.key});
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+ 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
